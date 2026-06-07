@@ -1113,6 +1113,23 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
+  /* === Forme header polish (scoped to #header-component) === */
+
+  /* Center nav: tracked uppercase like the design (purely visual) */
+  #header-component .header-menu .menu-list__link {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Minimal cart counter to match the design (refs/structure untouched) */
+  #header-component .header-actions__cart-icon {
+    --cart-bubble-size: 16px;
+  }
+
+  #header-component .header-actions__cart-icon .cart-bubble__text {
+    font-size: var(--font-size--4xs, 0.625rem);
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}

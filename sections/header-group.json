@@ -18,7 +18,7 @@
           "type": "_header-logo",
           "static": true,
           "settings": {
-            "hide_logo_on_home_page": true,
+            "hide_logo_on_home_page": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -50,13 +50,13 @@
         }
       },
       "settings": {
-        "logo_position": "center",
-        "menu_position": "left",
+        "logo_position": "left",
+        "menu_position": "center",
         "menu_row": "top",
         "show_search": true,
         "search_position": "right",
         "search_row": "top",
-        "show_country": true,
+        "show_country": false,
         "country_selector_style": true,
         "show_language": true,
         "localization_font": "heading",
