@@ -156,8 +156,6 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/women-training.png",
-            "subheading_lead": "Тренирай с усещане",
-            "subheading_trail": "Движи се със стил",
             "heading": "Силата е твоята",
             "description": "Създадени за всяка твоя тренировка. Увереност, комфорт и свобода да се движиш точно както искаш.",
             "cta_label": "Разгледай колекцията",
@@ -167,8 +165,6 @@
         "slide_E9E4kz": {
           "type": "slide",
           "settings": {
-            "subheading_lead": "Тренирай с усещане",
-            "subheading_trail": "Движи се със стил",
             "heading": "Силата е твоята",
             "description": "Създадени за всяка твоя тренировка. Увереност, комфорт и свобода да се движиш точно както искаш.",
             "cta_label": "Разгледай колекцията",
@@ -178,8 +174,6 @@
         "slide_aeNegi": {
           "type": "slide",
           "settings": {
-            "subheading_lead": "Тренирай с усещане",
-            "subheading_trail": "Движи се със стил",
             "heading": "Създадена за движение",
             "description": "Премиум активно облекло, което се движи с теб — на тренировка и извън нея.",
             "cta_label": "Разгледай колекцията",
@@ -238,7 +232,9 @@
         "autoplay": true,
         "autoplay_interval": 5,
         "accessibility_label": "Hero",
-        "pagination_label": "Select a slide to display"
+        "pagination_label": "Select a slide to display",
+        "heading_size_desktop": 110,
+        "heading_size_mobile": 44
       }
     }
   },
