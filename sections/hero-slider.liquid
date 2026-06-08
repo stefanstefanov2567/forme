@@ -163,6 +163,19 @@
   {%- endif -%}
 </section>
 
+{%- comment -%} Customizer-driven heading size — strictly scoped to this section instance {%- endcomment -%}
+{% style %}
+  #shopify-section-{{ section.id }} .hero-slider__heading {
+    font-size: {{ section.settings.heading_size_mobile | default: 44 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .hero-slider__heading {
+      font-size: {{ section.settings.heading_size_desktop | default: 120 }}px;
+    }
+  }
+{% endstyle %}
+
 {% stylesheet %}
   /* ===================================================================
      Hero Slider — STEP 2 CSS · Part 1 of 2
@@ -889,6 +902,30 @@
       "id": "pagination_label",
       "label": "Pagination label (aria-label)",
       "default": "Select a slide to display"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 48,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 44
     }
   ],
   "blocks": [
