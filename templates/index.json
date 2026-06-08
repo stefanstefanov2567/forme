@@ -152,6 +152,18 @@
     "hero_slider_QAehre": {
       "type": "hero-slider",
       "blocks": {
+        "slide_kg4MjN": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/women-training.png",
+            "subheading_lead": "Тренирай с усещане",
+            "subheading_trail": "Движи се със стил",
+            "heading": "Силата е твоята",
+            "description": "Създадени за всяка твоя тренировка. Увереност, комфорт и свобода да се движиш точно както искаш.",
+            "cta_label": "Разгледай колекцията",
+            "cta_url": ""
+          }
+        },
         "slide_E9E4kz": {
           "type": "slide",
           "settings": {
@@ -177,6 +189,7 @@
         "promo_fNgBJe": {
           "type": "promo",
           "settings": {
+            "image": "shopify://shop_images/women-training.png",
             "label": "Ново",
             "url": ""
           }
@@ -211,6 +224,7 @@
         }
       },
       "block_order": [
+        "slide_kg4MjN",
         "slide_E9E4kz",
         "slide_aeNegi",
         "promo_fNgBJe",
