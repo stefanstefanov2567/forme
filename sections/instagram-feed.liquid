@@ -1,0 +1,268 @@
+{%- comment -%}
+  Instagram Feed (manual) — sections/instagram-feed.liquid
+  White section: centered logo + heading + hashtag description, then a 6-up grid
+  of square image tiles that each link out to an Instagram post. Mobile = a
+  horizontal scroll-snap slider. Blocks = manual image + url. BEM styles + schema.
+{%- endcomment -%}
+
+{%- assign logo = section.settings.logo | default: settings.logo -%}
+
+{%- capture ig_icon -%}<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>{%- endcapture -%}
+
+<section class="instagram-feed color-{{ section.settings.color_scheme }}">
+  <div class="instagram-feed__header">
+    {%- if logo != blank -%}
+      <div class="instagram-feed__logo">
+        {{ logo | image_url: width: 480 | image_tag: loading: 'lazy', class: 'instagram-feed__logo-image', alt: shop.name }}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="instagram-feed__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="instagram-feed__description">{{ section.settings.description }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <ul class="instagram-feed__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="instagram-feed__item" {{ block.shopify_attributes }}>
+          <a
+            class="instagram-feed__post"
+            href="{{ block.settings.url | default: '#' }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="{{ 'general.social.links.instagram' | t | default: 'View on Instagram' }}"
+          >
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 800
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 990px) 15vw, 62vw',
+                  widths: '300, 450, 600, 800',
+                  class: 'instagram-feed__image',
+                  alt: ''
+              }}
+            {%- else -%}
+              {%- capture phn -%}{% cycle 'lifestyle-1', 'lifestyle-2' %}{%- endcapture -%}
+              {{ phn | placeholder_svg_tag: 'instagram-feed__image instagram-feed__image--ph' }}
+            {%- endif -%}
+            <span class="instagram-feed__icon" aria-hidden="true">{{ ig_icon }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .instagram-feed {
+    --if-gutter: clamp(1rem, 4vw, 4rem);
+
+    background-color: var(--color-background, #ffffff);
+    color: var(--color-foreground, #111111);
+    padding-block: clamp(3rem, 6vw, 6rem);
+    padding-inline: var(--if-gutter);
+  }
+
+  /* ---------- Centered header ---------- */
+  .instagram-feed__header {
+    max-width: 48rem;
+    margin-inline: auto;
+    margin-block-end: clamp(2rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .instagram-feed__logo-image {
+    width: auto;
+    height: 2.5rem;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .instagram-feed__heading {
+    margin: 0;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .instagram-feed__description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgb(var(--color-foreground-rgb, 17 17 17) / 0.7);
+  }
+  .instagram-feed__description strong {
+    font-weight: 700;
+    color: var(--color-foreground, #111111);
+  }
+  .instagram-feed__description > :first-child { margin-block-start: 0; }
+  .instagram-feed__description > :last-child { margin-block-end: 0; }
+
+  /* ---------- Grid → mobile scroll-snap slider ---------- */
+  .instagram-feed__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .instagram-feed__grid::-webkit-scrollbar { display: none; }
+
+  .instagram-feed__item {
+    flex: 0 0 auto;
+    width: min(62vw, 280px);
+    scroll-snap-align: start;
+  }
+
+  /* ---------- Square post tile ---------- */
+  .instagram-feed__post {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    overflow: hidden;
+    isolation: isolate;
+    text-decoration: none;
+    background-color: rgb(var(--color-foreground-rgb, 17 17 17) / 0.05);
+  }
+
+  .instagram-feed__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .instagram-feed__image--ph {
+    object-fit: cover;
+    opacity: 0.6;
+  }
+
+  /* faint dark overlay (deepens on hover) */
+  .instagram-feed__post::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0);
+    transition: background-color 0.4s ease;
+  }
+
+  .instagram-feed__icon {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  @media (hover: hover) {
+    .instagram-feed__post:hover .instagram-feed__image { transform: scale(1.06); }
+    .instagram-feed__post:hover::after { background: rgba(0, 0, 0, 0.28); }
+    .instagram-feed__post:hover .instagram-feed__icon { opacity: 1; transform: scale(1); }
+  }
+
+  .instagram-feed__post:focus-visible {
+    outline: 2px solid var(--color-foreground, #111111);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Desktop: 6-column grid ---------- */
+  @media screen and (min-width: 990px) {
+    .instagram-feed__grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      overflow: visible;
+    }
+    .instagram-feed__item { width: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .instagram-feed__image,
+    .instagram-feed__icon {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Instagram feed",
+  "class": "instagram-feed-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo override",
+      "info": "Defaults to your theme logo if left empty."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Последвай ни"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Сподели твоят <strong>#stateofmind</strong>. Покажи ни твоя стил!</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_post",
+      "name": "Instagram post",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "url", "label": "Instagram link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram feed",
+      "blocks": [
+        { "type": "instagram_post" },
+        { "type": "instagram_post" },
+        { "type": "instagram_post" },
+        { "type": "instagram_post" },
+        { "type": "instagram_post" },
+        { "type": "instagram_post" }
+      ]
+    }
+  ]
+}
+{% endschema %}
