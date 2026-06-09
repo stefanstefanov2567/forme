@@ -345,12 +345,74 @@
         "autoplay": false,
         "autoplay_interval": 6
       }
+    },
+    "lookbook_bento_P64W69": {
+      "type": "lookbook-bento",
+      "blocks": {
+        "block_LkUTca": {
+          "type": "block",
+          "settings": {
+            "text_style": "large",
+            "subheading": "Summer",
+            "heading": "State of mind",
+            "text": "<p>Light on you. Free in every moment.</p>",
+            "button_label": "Shop travel",
+            "button_link": ""
+          }
+        },
+        "block_x9pmbb": {
+          "type": "block",
+          "settings": {
+            "text_style": "small",
+            "subheading": "",
+            "heading": "Do not disturb",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "block_CJebXC": {
+          "type": "block",
+          "settings": {
+            "text_style": "small",
+            "subheading": "",
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "block_LfNYw6": {
+          "type": "block",
+          "settings": {
+            "text_style": "small",
+            "subheading": "",
+            "heading": "Made for anywhere",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "block_LkUTca",
+        "block_x9pmbb",
+        "block_CJebXC",
+        "block_LfNYw6"
+      ],
+      "name": "Lookbook bento",
+      "settings": {
+        "border_radius": 24,
+        "gap": 8,
+        "overlay_opacity": 30
+      }
     }
   },
   "order": [
     "media_with_content_aF6TTD",
     "hero_slider_QAehre",
     "category_showcase_XDcc4c",
-    "discover_strength_hcWK8X"
+    "discover_strength_hcWK8X",
+    "lookbook_bento_P64W69"
   ]
 }
