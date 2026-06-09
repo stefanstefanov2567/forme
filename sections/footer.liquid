@@ -107,6 +107,7 @@
     --ft-gutter: clamp(1.25rem, 4vw, 4.5rem);
     --ft-pad-block: clamp(2.5rem, 5vw, 4.5rem);
     --ft-gap-bottom: clamp(2.5rem, 5vw, 4rem);
+    --ft-decor-width: clamp(150px, 15vw, 240px);
 
     position: relative;
     overflow: hidden;
@@ -117,30 +118,37 @@
     padding-inline: var(--ft-gutter);
   }
 
-  /* Decorative curved side images — flank the 3-column layout, desktop only.
+  /* Decorative side images — flank the 3-column layout, desktop only.
      They span from the footer top down to the divider line (never the bottom
-     bar), with a large smooth curve on the inner edge. Hidden below 990px. */
+     bar) and stay pinned to the screen edges. The inner edge is CONCAVE:
+     a background-cream ellipse (::after) is clipped by the panel so the
+     cream scoops *into* the image. Hidden below 990px. */
   .footer-custom__decor {
     display: none;
     position: absolute;
     top: calc(-1 * var(--ft-pad-block));
     bottom: 0;
     z-index: -1;
-    width: clamp(150px, 18vw, 260px);
+    width: var(--ft-decor-width);
     overflow: hidden;
     pointer-events: none;
   }
-  .footer-custom__decor--left {
-    left: calc(-1 * var(--ft-gutter));
-    border-top-right-radius: 50vw;
-    border-bottom-right-radius: 50vw;
-  }
-  .footer-custom__decor--right {
-    right: calc(-1 * var(--ft-gutter));
-    border-top-left-radius: 50vw;
-    border-bottom-left-radius: 50vw;
-  }
+  .footer-custom__decor--left { left: calc(-1 * var(--ft-gutter)); }
+  .footer-custom__decor--right { right: calc(-1 * var(--ft-gutter)); }
   .footer-custom__decor-image { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Concave scoop: a cream ellipse the panel clips along its inner edge */
+  .footer-custom__decor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 70%;
+    height: 150%;
+    background: var(--color-background, #edebe7);
+    border-radius: 50%;
+  }
+  .footer-custom__decor--left::after { right: 0; transform: translate(50%, -50%); }
+  .footer-custom__decor--right::after { left: 0; transform: translate(-50%, -50%); }
 
   @media screen and (min-width: 990px) {
     .footer-custom__decor { display: block; }
@@ -261,6 +269,7 @@
       grid-template-columns: 1fr auto 1fr;
       gap: clamp(2rem, 5vw, 6rem);
       align-items: center;
+      padding-inline: calc(var(--ft-decor-width) + clamp(2rem, 4vw, 4.5rem));
     }
 
     .footer-custom__bottom {
