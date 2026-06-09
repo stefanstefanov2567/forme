@@ -1,0 +1,370 @@
+{%- comment -%}
+  Discover Strength — sections/discover-strength.liquid
+  Two-column split (large desktop): dark message column (two-tone heading +
+  description + optional CTA) on the left, a collection-driven product grid on
+  the right. Below 990px it stacks and the products become a scroll-snap slider.
+  Self-contained: BEM styles + schema below.
+{%- endcomment -%}
+
+{%- assign coll = section.settings.collection -%}
+{%- assign count = section.settings.products_count | default: 4 -%}
+
+<section
+  class="discover-strength"
+  style="--ds-bg: {{ section.settings.background_color }}; --ds-accent: {{ section.settings.accent_color }};"
+>
+  <div class="discover-strength__message">
+    {%- if section.settings.heading_line_1 != blank or section.settings.heading_line_2 != blank -%}
+      <h2 class="discover-strength__heading">
+        {%- if section.settings.heading_line_1 != blank -%}
+          <span class="discover-strength__heading-1">{{ section.settings.heading_line_1 }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading_line_2 != blank -%}
+          <span class="discover-strength__heading-2">{{ section.settings.heading_line_2 }}</span>
+        {%- endif -%}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="discover-strength__description">{{ section.settings.description }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <a class="discover-strength__button" href="{{ section.settings.button_link | default: '#' }}">
+        <span>{{ section.settings.button_label }}</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M5 12h13m0 0-5-5m5 5-5 5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    {%- endif -%}
+  </div>
+
+  <div class="discover-strength__products">
+    {%- if coll != blank and coll.products.size > 0 -%}
+      {%- for product in coll.products limit: count -%}
+        <a class="discover-strength__product" href="{{ product.url }}">
+          <div class="discover-strength__product-media">
+            {%- if product.featured_image -%}
+              {{
+                product.featured_image
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 990px) 30vw, 70vw',
+                  widths: '320, 480, 640, 800, 900',
+                  class: 'discover-strength__product-image',
+                  alt: product.featured_image.alt | default: product.title
+              }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'discover-strength__product-image discover-strength__product-image--placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="discover-strength__product-info">
+            <h3 class="discover-strength__product-title">{{ product.title }}</h3>
+            <span class="discover-strength__product-price">{{ product.price | money }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..count) -%}
+        <span class="discover-strength__product discover-strength__product--placeholder">
+          <div class="discover-strength__product-media">
+            {%- capture ph -%}product-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
+            {{ ph | placeholder_svg_tag: 'discover-strength__product-image discover-strength__product-image--placeholder' }}
+          </div>
+          <div class="discover-strength__product-info">
+            <h3 class="discover-strength__product-title">Примерен продукт</h3>
+            <span class="discover-strength__product-price">{{ 4999 | money }}</span>
+          </div>
+        </span>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .discover-strength {
+    --ds-bg: #0d0d0d;
+    --ds-accent: #deff9a;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Left message column ---------- */
+  .discover-strength__message {
+    background-color: var(--ds-bg, #0d0d0d);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .discover-strength__heading {
+    margin: 0;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .discover-strength__heading-1 {
+    display: block;
+    color: #fff;
+  }
+
+  .discover-strength__heading-2 {
+    display: block;
+    color: var(--ds-accent, #deff9a);
+  }
+
+  .discover-strength__description {
+    max-width: 38ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .discover-strength__description > :first-child { margin-block-start: 0; }
+  .discover-strength__description > :last-child { margin-block-end: 0; }
+
+  .discover-strength__button {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-block-start: 0.5rem;
+    padding: 0.95rem 1.5rem;
+    border-radius: 8px;
+    background: #fff;
+    color: #111;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+  }
+
+  .discover-strength__button svg {
+    transition: transform 0.25s ease;
+  }
+
+  @media (hover: hover) {
+    .discover-strength__button:hover { transform: translateY(-2px); }
+    .discover-strength__button:hover svg { transform: translateX(4px); }
+  }
+
+  /* ---------- Right products: mobile/tablet scroll slider ---------- */
+  .discover-strength__products {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .discover-strength__products::-webkit-scrollbar { display: none; }
+
+  .discover-strength__product {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(70vw, 300px);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    aspect-ratio: 4 / 5;
+    padding: 1.25rem;
+    border-radius: 12px;
+    overflow: hidden;
+    isolation: isolate;
+    color: #fff;
+    text-decoration: none;
+    background-color: #161616;
+  }
+
+  .discover-strength__product--placeholder {
+    cursor: default;
+  }
+
+  .discover-strength__product-media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+  }
+
+  .discover-strength__product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .discover-strength__product-image--placeholder {
+    background: #1f1f1f;
+    opacity: 0.5;
+  }
+
+  /* angled dark overlay for legibility + the "cut" look */
+  .discover-strength__product::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(157deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 45%, rgba(0, 0, 0, 0.85) 100%);
+  }
+
+  .discover-strength__product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .discover-strength__product-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .discover-strength__product-price {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ds-accent, #deff9a);
+  }
+
+  @media (hover: hover) {
+    .discover-strength__product:hover .discover-strength__product-image {
+      transform: scale(1.05);
+    }
+  }
+
+  .discover-strength__product:focus-visible {
+    outline: 2px solid var(--ds-accent, #deff9a);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Large desktop: two-column split + 2-up product grid ---------- */
+  @media screen and (min-width: 990px) {
+    .discover-strength {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      align-items: stretch;
+    }
+
+    .discover-strength__products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      overflow: visible;
+    }
+
+    .discover-strength__product {
+      width: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .discover-strength__product-image,
+    .discover-strength__button,
+    .discover-strength__button svg {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Discover strength",
+  "class": "discover-strength-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Message (left column)"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading — line 1 (white)",
+      "default": "Открий своята"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading — line 2 (accent)",
+      "default": "Сила"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Екипировка, създадена да издържа на всяко предизвикателство – от загрявката до последното повторение. Движи се със сила и увереност.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label (optional)",
+      "default": "Пазарувай фитнес"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Products (right column)"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Message background",
+      "default": "#0d0d0d"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent colour",
+      "default": "#deff9a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discover strength",
+      "settings": {
+        "heading_line_1": "Открий своята",
+        "heading_line_2": "Сила",
+        "products_count": 4
+      }
+    }
+  ]
+}
+{% endschema %}
