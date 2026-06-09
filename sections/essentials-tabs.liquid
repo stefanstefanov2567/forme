@@ -1,0 +1,596 @@
+{%- comment -%}
+  Essentials Tabs — sections/essentials-tabs.liquid
+  Cream tabbed collection section: brand logo + big heading + tab nav (left),
+  star + description (right). One product grid per tab, swapped via vanilla JS
+  (no reload). 4-col grid on desktop, scroll-snap slider on mobile. The View All
+  button updates to the active tab's collection. BEM styles, JS, schema below.
+{%- endcomment -%}
+
+{%- liquid
+  assign logo = section.settings.logo | default: settings.logo
+  assign count = section.settings.products_to_show | default: 4
+  assign first_block = section.blocks.first
+-%}
+
+{%- capture star_svg -%}<svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c.6 6 5.4 10.8 11.4 11.4v1.2C17.4 13.2 12.6 18 12 24c-.6-6-5.4-10.8-11.4-11.4v-1.2C6.6 10.8 11.4 6 12 0Z"/></svg>{%- endcapture -%}
+
+<section class="essentials-tabs color-{{ section.settings.color_scheme }}" data-essentials-tabs>
+  <div class="essentials-tabs__header">
+    <div class="essentials-tabs__header-left">
+      {%- if logo != blank -%}
+        <div class="essentials-tabs__logo">
+          {{ logo | image_url: width: 400 | image_tag: loading: 'lazy', class: 'essentials-tabs__logo-image', alt: shop.name }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="essentials-tabs__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="essentials-tabs__tabs" role="tablist" aria-label="{{ section.settings.heading | default: 'Collections' | escape }}">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="essentials-tabs__tab{% if forloop.first %} is-active{% endif %}"
+              role="tab"
+              id="et-tab-{{ section.id }}-{{ forloop.index0 }}"
+              aria-controls="et-panel-{{ section.id }}-{{ forloop.index0 }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+              data-tab="{{ forloop.index0 }}"
+              data-collection-url="{{ block.settings.collection.url | default: '' }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.title | default: 'Tab' }}
+            </button>
+            {%- unless forloop.last -%}<span class="essentials-tabs__tab-sep" aria-hidden="true"></span>{%- endunless -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="essentials-tabs__header-right">
+      <span class="essentials-tabs__star" aria-hidden="true">{{ star_svg }}</span>
+      {%- if section.settings.description != blank -%}
+        <div class="essentials-tabs__description">{{ section.settings.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="essentials-tabs__panels">
+    {%- for block in section.blocks -%}
+      <div
+        class="essentials-tabs__panel{% if forloop.first %} is-active{% endif %}"
+        role="tabpanel"
+        id="et-panel-{{ section.id }}-{{ forloop.index0 }}"
+        aria-labelledby="et-tab-{{ section.id }}-{{ forloop.index0 }}"
+        data-panel="{{ forloop.index0 }}"
+        {%- unless forloop.first %} hidden{% endunless -%}
+      >
+        <div class="essentials-tabs__grid">
+          {%- assign coll = block.settings.collection -%}
+          {%- if coll != blank and coll.products.size > 0 -%}
+            {%- for product in coll.products limit: count -%}
+              {%- liquid
+                assign color_option = null
+                for opt in product.options_with_values
+                  assign nm = opt.name | downcase
+                  if nm contains 'color' or nm contains 'colour' or nm contains 'цвят'
+                    assign color_option = opt
+                    break
+                  endif
+                endfor
+              -%}
+              <a class="essentials-tabs__product" href="{{ product.url }}">
+                <div class="essentials-tabs__product-media">
+                  {%- if product.featured_image -%}
+                    {{
+                      product.featured_image
+                      | image_url: width: 700
+                      | image_tag:
+                        loading: 'lazy',
+                        sizes: '(min-width: 990px) 22vw, 60vw',
+                        widths: '300, 450, 600, 700',
+                        class: 'essentials-tabs__product-image',
+                        alt: product.title
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'essentials-tabs__product-image essentials-tabs__product-image--ph' }}
+                  {%- endif -%}
+                </div>
+                {%- if color_option -%}
+                  <div class="essentials-tabs__swatches">
+                    {%- for value in color_option.values limit: 4 -%}
+                      <span class="essentials-tabs__swatch" title="{{ value | escape }}" style="{% if value.swatch.color %}background-color: {{ value.swatch.color }};{% elsif value.swatch.image %}background-image: url({{ value.swatch.image | image_url: width: 40 }}); background-size: cover;{% endif %}"></span>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+                <h3 class="essentials-tabs__product-title">{{ product.title }}</h3>
+                <span class="essentials-tabs__product-price">{{ product.price | money }}</span>
+              </a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..count) -%}
+              <span class="essentials-tabs__product essentials-tabs__product--ph">
+                <div class="essentials-tabs__product-media">
+                  {%- capture phn -%}product-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
+                  {{ phn | placeholder_svg_tag: 'essentials-tabs__product-image essentials-tabs__product-image--ph' }}
+                </div>
+                <div class="essentials-tabs__swatches">
+                  <span class="essentials-tabs__swatch" style="background-color: #3a4a3f;"></span>
+                  <span class="essentials-tabs__swatch" style="background-color: #2a2622;"></span>
+                  <span class="essentials-tabs__swatch" style="background-color: #b9a99a;"></span>
+                </div>
+                <h3 class="essentials-tabs__product-title">Примерен продукт</h3>
+                <span class="essentials-tabs__product-price">{{ 5800 | money }}</span>
+              </span>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="essentials-tabs__footer">
+    {%- if section.settings.view_all_label != blank -%}
+      <a class="essentials-tabs__view-all" href="{{ first_block.settings.collection.url | default: '#' }}" data-view-all>
+        <span>{{ section.settings.view_all_label }}</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M5 12h13m0 0-5-5m5 5-5 5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    {%- endif -%}
+    <div class="essentials-tabs__divider" aria-hidden="true">
+      <span class="essentials-tabs__divider-star">{{ star_svg }}</span>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .essentials-tabs {
+    --et-gutter: clamp(1.25rem, 4vw, 4rem);
+    --et-accent: #b98a90;
+
+    background-color: var(--color-background, #f4f1ec);
+    color: var(--color-foreground, #1f1d1b);
+    padding-block: clamp(2.5rem, 5vw, 5rem);
+    padding-inline: var(--et-gutter);
+  }
+
+  /* ---------- Header ---------- */
+  .essentials-tabs__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-block-end: clamp(2rem, 4vw, 3rem);
+  }
+
+  .essentials-tabs__logo-image {
+    width: auto;
+    height: 1.75rem;
+    object-fit: contain;
+    margin-block-end: 0.5rem;
+  }
+
+  .essentials-tabs__heading {
+    margin: 0;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+  }
+
+  .essentials-tabs__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .essentials-tabs__tab {
+    margin: 0;
+    padding: 0.4rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb, 31 29 27) / 0.6);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .essentials-tabs__tab:hover { color: var(--color-foreground, #1f1d1b); }
+
+  .essentials-tabs__tab.is-active {
+    color: var(--color-foreground, #1f1d1b);
+    border-color: var(--et-accent);
+  }
+
+  .essentials-tabs__tab:focus-visible {
+    outline: 2px solid var(--et-accent);
+    outline-offset: 2px;
+  }
+
+  .essentials-tabs__tab-sep {
+    width: 1px;
+    height: 0.9rem;
+    background: rgb(var(--color-foreground-rgb, 31 29 27) / 0.2);
+  }
+
+  .essentials-tabs__header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .essentials-tabs__star {
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--et-accent);
+  }
+
+  .essentials-tabs__description {
+    max-width: 30ch;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgb(var(--color-foreground-rgb, 31 29 27) / 0.7);
+  }
+  .essentials-tabs__description > :first-child { margin-block-start: 0; }
+  .essentials-tabs__description > :last-child { margin-block-end: 0; }
+
+  /* ---------- Panels + grid ---------- */
+  .essentials-tabs__panel[hidden] { display: none; }
+
+  .essentials-tabs__grid {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-block-end: 0.5rem;
+  }
+  .essentials-tabs__grid::-webkit-scrollbar { display: none; }
+
+  /* ---------- Product card ---------- */
+  .essentials-tabs__product {
+    flex: 0 0 auto;
+    width: min(62vw, 280px);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .essentials-tabs__product-media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    margin-block-end: 0.85rem;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb, 31 29 27) / 0.06);
+  }
+
+  .essentials-tabs__product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .essentials-tabs__product-image--ph {
+    object-fit: contain;
+    padding: 18%;
+    opacity: 0.5;
+  }
+
+  @media (hover: hover) {
+    .essentials-tabs__product:hover .essentials-tabs__product-image { transform: scale(1.04); }
+  }
+
+  .essentials-tabs__swatches {
+    display: flex;
+    gap: 0.4rem;
+    margin-block-end: 0.6rem;
+  }
+
+  .essentials-tabs__swatch {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background-color: #d8d2ca;
+    background-position: center;
+    box-shadow: inset 0 0 0 1px rgb(var(--color-foreground-rgb, 31 29 27) / 0.15);
+  }
+
+  .essentials-tabs__product-title {
+    margin: 0 0 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .essentials-tabs__product-price {
+    font-size: 0.9rem;
+    color: rgb(var(--color-foreground-rgb, 31 29 27) / 0.7);
+  }
+
+  /* ---------- Footer ---------- */
+  .essentials-tabs__footer {
+    margin-block-start: clamp(2rem, 4vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .essentials-tabs__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    background: var(--color-foreground, #1f1d1b);
+    color: var(--color-background, #f4f1ec);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+  }
+  .essentials-tabs__view-all svg { transition: transform 0.25s ease; }
+  @media (hover: hover) {
+    .essentials-tabs__view-all:hover { transform: translateY(-2px); }
+    .essentials-tabs__view-all:hover svg { transform: translateX(4px); }
+  }
+
+  .essentials-tabs__divider {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .essentials-tabs__divider::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: 1px;
+    background: rgb(var(--color-foreground-rgb, 31 29 27) / 0.18);
+  }
+  .essentials-tabs__divider-star {
+    position: relative;
+    display: inline-flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding-inline: 0.75rem;
+    color: var(--et-accent);
+    background: var(--color-background, #f4f1ec);
+  }
+
+  /* ---------- Desktop ---------- */
+  @media screen and (min-width: 990px) {
+    .essentials-tabs__header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .essentials-tabs__header-right {
+      align-items: flex-end;
+      text-align: right;
+      padding-block-start: 0.5rem;
+    }
+    .essentials-tabs__description { text-align: right; }
+
+    .essentials-tabs__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      overflow: visible;
+    }
+    .essentials-tabs__product { width: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .essentials-tabs__product-image,
+    .essentials-tabs__view-all,
+    .essentials-tabs__view-all svg {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    'use strict';
+
+    if (window.EssentialsTabs) {
+      window.EssentialsTabs.initAll();
+      return;
+    }
+
+    var SEL = {
+      root: '[data-essentials-tabs]',
+      tab: '.essentials-tabs__tab',
+      panel: '.essentials-tabs__panel',
+      viewAll: '[data-view-all]'
+    };
+
+    class EssentialsTabsController {
+      constructor(root) {
+        this.root = root;
+        this.tabs = Array.from(root.querySelectorAll(SEL.tab));
+        this.panels = Array.from(root.querySelectorAll(SEL.panel));
+        this.viewAll = root.querySelector(SEL.viewAll);
+        this.ac = new AbortController();
+      }
+
+      init() {
+        if (this.tabs.length === 0) return;
+        var signal = this.ac.signal;
+        var self = this;
+        this.tabs.forEach(function (tab, i) {
+          tab.addEventListener('click', function () { self.activate(i, true); }, { signal: signal });
+          tab.addEventListener('keydown', function (e) { self.onKeydown(e, i); }, { signal: signal });
+        });
+        this.activate(this.currentIndex(), false);
+      }
+
+      currentIndex() {
+        for (var i = 0; i < this.tabs.length; i++) {
+          if (this.tabs[i].classList.contains('is-active')) return i;
+        }
+        return 0;
+      }
+
+      activate(i, focus) {
+        this.tabs.forEach(function (tab, idx) {
+          var active = idx === i;
+          tab.classList.toggle('is-active', active);
+          tab.setAttribute('aria-selected', active ? 'true' : 'false');
+          tab.setAttribute('tabindex', active ? '0' : '-1');
+        });
+        this.panels.forEach(function (panel, idx) {
+          var active = idx === i;
+          panel.classList.toggle('is-active', active);
+          panel.hidden = !active;
+        });
+        var tab = this.tabs[i];
+        if (this.viewAll && tab && tab.dataset.collectionUrl) {
+          this.viewAll.setAttribute('href', tab.dataset.collectionUrl);
+        }
+        if (focus && tab) tab.focus();
+      }
+
+      onKeydown(e, i) {
+        var n = this.tabs.length;
+        var target = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') target = (i + 1) % n;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') target = (i - 1 + n) % n;
+        else if (e.key === 'Home') target = 0;
+        else if (e.key === 'End') target = n - 1;
+        if (target === null) return;
+        e.preventDefault();
+        this.activate(target, true);
+      }
+
+      destroy() { this.ac.abort(); }
+    }
+
+    var instances = new Map();
+    function initRoot(root) { if (!root || instances.has(root)) return; var inst = new EssentialsTabsController(root); instances.set(root, inst); inst.init(); }
+    function destroyRoot(root) { var inst = instances.get(root); if (!inst) return; inst.destroy(); instances.delete(root); }
+    function sweepDetached() { instances.forEach(function (inst, root) { if (!root.isConnected) { inst.destroy(); instances.delete(root); } }); }
+    function initAll(scope) { sweepDetached(); (scope || document).querySelectorAll(SEL.root).forEach(initRoot); }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { initAll(); }, { once: true });
+    } else {
+      initAll();
+    }
+
+    document.addEventListener('shopify:section:load', function (e) {
+      sweepDetached();
+      if (e.target && e.target.querySelectorAll) e.target.querySelectorAll(SEL.root).forEach(initRoot);
+    });
+    document.addEventListener('shopify:section:unload', function (e) {
+      if (e.target && e.target.querySelectorAll) e.target.querySelectorAll(SEL.root).forEach(destroyRoot);
+      sweepDetached();
+    });
+    document.addEventListener('shopify:block:select', function (e) {
+      var root = e.target.closest ? e.target.closest(SEL.root) : null;
+      if (!root) return;
+      var inst = instances.get(root);
+      if (!inst) return;
+      var tab = e.target.closest(SEL.tab);
+      if (tab) { var idx = inst.tabs.indexOf(tab); if (idx >= 0) inst.activate(idx, false); }
+    });
+
+    window.EssentialsTabs = { initAll: initAll, instances: instances };
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Essentials tabs",
+  "class": "essentials-tabs-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo override",
+      "info": "Defaults to your theme logo if left empty."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Essentials"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Основите на твоя гардероб.<br>Създадени да се движиш. Създадени да останат.</p>"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all button label",
+      "default": "Виж всички"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products per tab",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Tab title", "default": "Нови" },
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Essentials tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "title": "Нови" } },
+        { "type": "tab", "settings": { "title": "Екипи" } },
+        { "type": "tab", "settings": { "title": "Най-продавани" } },
+        { "type": "tab", "settings": { "title": "Подбрано за теб" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
