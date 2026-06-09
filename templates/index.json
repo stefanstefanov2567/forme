@@ -509,6 +509,46 @@
         "description": "<p>Сподели твоят <strong>#stateofmind</strong>. Покажи ни твоя стил!</p>",
         "color_scheme": ""
       }
+    },
+    "brand_values_QAhbri": {
+      "type": "brand-values",
+      "blocks": {
+        "value_hrGxtk": {
+          "type": "value",
+          "settings": {
+            "text": "Strong\nMind\nStrong\nBody"
+          }
+        },
+        "value_JJ3kDh": {
+          "type": "value",
+          "settings": {
+            "text": "Details\nMatter"
+          }
+        },
+        "value_WfTfLM": {
+          "type": "value",
+          "settings": {
+            "text": "Focus\nDiscipline\nProgress"
+          }
+        },
+        "value_AKxHtj": {
+          "type": "value",
+          "settings": {
+            "text": "Performance\nMeets\nElegance"
+          }
+        }
+      },
+      "block_order": [
+        "value_hrGxtk",
+        "value_JJ3kDh",
+        "value_WfTfLM",
+        "value_AKxHtj"
+      ],
+      "name": "Brand values",
+      "settings": {
+        "color_scheme": "",
+        "card_corner_radius": 20
+      }
     }
   },
   "order": [
@@ -518,6 +558,7 @@
     "discover_strength_hcWK8X",
     "lookbook_bento_P64W69",
     "essentials_tabs_jEwNNz",
-    "instagram_feed_geRxeK"
+    "instagram_feed_geRxeK",
+    "brand_values_QAhbri"
   ]
 }
