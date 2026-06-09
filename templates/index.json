@@ -302,11 +302,55 @@
         "color_scheme": "",
         "card_corner_radius": 24
       }
+    },
+    "discover_strength_hcWK8X": {
+      "type": "discover-strength",
+      "blocks": {
+        "slide_L8xVUf": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
+            "heading": "Функционални екипи, които работят за теб – във всяко повторение.",
+            "button_label": "Пазарувай фитнес",
+            "button_link": ""
+          }
+        },
+        "slide_974FMJ": {
+          "type": "slide",
+          "settings": {
+            "heading": "Създадена за движение – тренирай без компромис.",
+            "button_label": "Пазарувай фитнес",
+            "button_link": ""
+          }
+        },
+        "slide_i6Ek9T": {
+          "type": "slide",
+          "settings": {
+            "heading": "Сила, която носиш със себе си – ден след ден.",
+            "button_label": "Пазарувай фитнес",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_L8xVUf",
+        "slide_974FMJ",
+        "slide_i6Ek9T"
+      ],
+      "name": "Discover strength",
+      "settings": {
+        "accessibility_label": "Image slider",
+        "section_height": "72vh",
+        "overlay_opacity": 55,
+        "autoplay": false,
+        "autoplay_interval": 6
+      }
     }
   },
   "order": [
     "media_with_content_aF6TTD",
     "hero_slider_QAehre",
-    "category_showcase_XDcc4c"
+    "category_showcase_XDcc4c",
+    "discover_strength_hcWK8X"
   ]
 }
