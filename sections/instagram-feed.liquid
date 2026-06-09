@@ -9,11 +9,11 @@
 
 {%- capture ig_icon -%}<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>{%- endcapture -%}
 
-<section class="instagram-feed color-{{ section.settings.color_scheme }}">
+<section class="instagram-feed color-{{ section.settings.color_scheme }}" style="--if-logo-width: {{ section.settings.logo_width | default: 160 }}px;">
   <div class="instagram-feed__header">
     {%- if logo != blank -%}
       <div class="instagram-feed__logo">
-        {{ logo | image_url: width: 480 | image_tag: loading: 'lazy', class: 'instagram-feed__logo-image', alt: shop.name }}
+        {{ logo | image_url: width: 640 | image_tag: loading: 'lazy', class: 'instagram-feed__logo-image', alt: shop.name }}
       </div>
     {%- endif -%}
 
@@ -83,8 +83,8 @@
   }
 
   .instagram-feed__logo-image {
-    width: auto;
-    height: 2.5rem;
+    width: var(--if-logo-width, 160px);
+    height: auto;
     max-width: 100%;
     object-fit: contain;
   }
@@ -221,6 +221,16 @@
       "id": "logo",
       "label": "Logo override",
       "info": "Defaults to your theme logo if left empty."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 160
     },
     {
       "type": "text",
