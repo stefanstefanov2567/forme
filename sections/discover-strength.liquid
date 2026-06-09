@@ -83,6 +83,7 @@
   .discover-strength {
     position: relative;
     isolation: isolate;
+    background-color: #edebe7; /* seamless cream base behind the slides */
   }
 
   .discover-strength__viewport {
@@ -183,7 +184,7 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
-    display: inline-flex;
+    display: none; /* hidden on mobile — users swipe; restored on desktop below */
     align-items: center;
     justify-content: center;
     width: 3rem;
@@ -200,6 +201,11 @@
 
   .discover-strength__nav--prev { left: clamp(0.5rem, 1.5vw, 1.5rem); }
   .discover-strength__nav--next { right: clamp(0.5rem, 1.5vw, 1.5rem); }
+
+  /* Show the prev/next arrows from tablet up — mobile users swipe instead */
+  @media screen and (min-width: 750px) {
+    .discover-strength__nav { display: inline-flex; }
+  }
 
   @media (hover: hover) {
     .discover-strength__nav:hover {
