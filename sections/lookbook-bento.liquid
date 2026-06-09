@@ -7,7 +7,7 @@
 {%- endcomment -%}
 
 <section
-  class="lookbook-bento"
+  class="lookbook-bento color-{{ section.settings.color_scheme }}"
   style="--lb-radius: {{ section.settings.border_radius | default: 24 }}px; --lb-gap: {{ section.settings.gap | default: 8 }}px; --lb-overlay: {{ section.settings.overlay_opacity | default: 30 | divided_by: 100.0 }};"
 >
   <div class="lookbook-bento__grid">
@@ -66,6 +66,8 @@
 
 {% stylesheet %}
   .lookbook-bento {
+    background-color: var(--color-background, #edebe7);
+    color: var(--color-foreground, #1a1a1a);
     padding-inline: clamp(0.75rem, 3vw, 2.5rem);
     padding-block: clamp(1.5rem, 4vw, 3rem);
   }
@@ -257,6 +259,12 @@
   },
   "max_blocks": 4,
   "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
     {
       "type": "range",
       "id": "border_radius",

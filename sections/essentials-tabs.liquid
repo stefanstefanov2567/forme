@@ -154,7 +154,7 @@
 
     background-color: var(--color-background, #f4f1ec);
     color: var(--color-foreground, #1f1d1b);
-    padding-block: clamp(2.5rem, 5vw, 5rem);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
     padding-inline: var(--et-gutter);
   }
 
@@ -257,10 +257,14 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-block-end: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb, 31 29 27) / 0.4) rgb(var(--color-foreground-rgb, 31 29 27) / 0.1);
+    padding-block-end: 1rem;
   }
-  .essentials-tabs__grid::-webkit-scrollbar { display: none; }
+  /* Visible scroll tracker for the mobile slider (no scrollbar on desktop where it's a grid) */
+  .essentials-tabs__grid::-webkit-scrollbar { height: 4px; }
+  .essentials-tabs__grid::-webkit-scrollbar-track { background: rgb(var(--color-foreground-rgb, 31 29 27) / 0.1); border-radius: 999px; }
+  .essentials-tabs__grid::-webkit-scrollbar-thumb { background: rgb(var(--color-foreground-rgb, 31 29 27) / 0.35); border-radius: 999px; }
 
   /* ---------- Product card ---------- */
   .essentials-tabs__product {

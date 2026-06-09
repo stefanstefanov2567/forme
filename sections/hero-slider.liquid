@@ -200,7 +200,7 @@
     max-width: 36rem;
     min-height: 100svh;
     padding-block-start: calc(var(--hs-header-offset) + 2rem);
-    padding-block-end: 13rem; /* clear the pagination row + USP bar on mobile */
+    padding-block-end: 7rem; /* clear the pagination row (USP hidden on mobile) */
     padding-inline: var(--hs-inline);
   }
 
@@ -372,26 +372,23 @@
 
   /* ----------------------------- PROMO CARDS ----------------------------- */
   /* Mobile base: horizontal scroll-snap row, above pagination + USP */
+  /* Mobile: two large, touch-friendly cards side by side */
   .hero-slider__promos {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
     width: 100%;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
   }
 
   .hero-slider__promo {
     position: relative;
-    flex: 0 0 auto;
-    width: 9rem;
-    aspect-ratio: 16 / 10;
-    border-radius: 8px;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 12px;
     overflow: hidden;
     isolation: isolate;
     color: #ffffff;
     text-decoration: none;
-    scroll-snap-align: start;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
@@ -510,7 +507,7 @@
     margin: 0;
     padding: 0.85rem var(--hs-inline);
     list-style: none;
-    display: flex;
+    display: none; /* hidden on mobile per client feedback */
     flex-wrap: nowrap;
     align-items: center;
     gap: 1.5rem;
@@ -549,12 +546,15 @@
   @media screen and (min-width: 750px) {
     /* Promo cards → larger, no scroll (they sit in the left-column flow) */
     .hero-slider__promos {
+      display: flex;
       gap: 1rem;
       overflow: visible;
     }
 
     .hero-slider__promo {
       width: 13rem;
+      aspect-ratio: 16 / 10;
+      border-radius: 8px;
     }
 
     .hero-slider__promo-label {
@@ -579,6 +579,7 @@
 
     /* USP bar → evenly spaced full-width row with dividers */
     .hero-slider__usp {
+      display: flex; /* shown again on desktop */
       gap: 0;
       overflow: visible;
       padding-block: 1.25rem;
