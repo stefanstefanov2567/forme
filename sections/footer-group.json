@@ -55,7 +55,9 @@
         "instagram_link": "",
         "tiktok_link": "",
         "pinterest_link": "",
-        "email_address": ""
+        "email_address": "",
+        "image_left": "shopify://shop_images/girl-training.png",
+        "image_right": "shopify://shop_images/training-bottle.png"
       }
     }
   },
