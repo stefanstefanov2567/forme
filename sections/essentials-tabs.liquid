@@ -14,12 +14,12 @@
 
 {%- capture star_svg -%}<svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c.6 6 5.4 10.8 11.4 11.4v1.2C17.4 13.2 12.6 18 12 24c-.6-6-5.4-10.8-11.4-11.4v-1.2C6.6 10.8 11.4 6 12 0Z"/></svg>{%- endcapture -%}
 
-<section class="essentials-tabs color-{{ section.settings.color_scheme }}" data-essentials-tabs>
+<section class="essentials-tabs color-{{ section.settings.color_scheme }}" style="--et-logo-width: {{ section.settings.logo_width | default: 160 }}px;" data-essentials-tabs>
   <div class="essentials-tabs__header">
     <div class="essentials-tabs__header-left">
       {%- if logo != blank -%}
         <div class="essentials-tabs__logo">
-          {{ logo | image_url: width: 400 | image_tag: loading: 'lazy', class: 'essentials-tabs__logo-image', alt: shop.name }}
+          {{ logo | image_url: width: 640 | image_tag: loading: 'lazy', class: 'essentials-tabs__logo-image', alt: shop.name }}
         </div>
       {%- endif -%}
 
@@ -167,10 +167,11 @@
   }
 
   .essentials-tabs__logo-image {
-    width: auto;
-    height: 1.75rem;
+    width: var(--et-logo-width, 160px);
+    height: auto;
+    max-width: 100%;
     object-fit: contain;
-    margin-block-end: 0.5rem;
+    margin-block-end: 0.75rem;
   }
 
   .essentials-tabs__heading {
@@ -536,6 +537,16 @@
       "id": "logo",
       "label": "Logo override",
       "info": "Defaults to your theme logo if left empty."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 160
     },
     {
       "type": "text",
