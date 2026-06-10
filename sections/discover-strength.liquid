@@ -140,12 +140,14 @@
     align-items: flex-start;
     gap: 1.75rem;
     width: 100%;
-    max-width: 38rem;
-    padding: clamp(1.5rem, 5vw, 4.5rem);
+    max-width: 44rem;
+    padding-block: clamp(1.5rem, 5vw, 4.5rem);
+    padding-inline: clamp(1.5rem, 5vw, 4.5rem);
   }
 
   .discover-strength__heading {
     margin: 0;
+    max-width: 32rem;
     font-weight: 500;
     line-height: 1.35;
     letter-spacing: 0.12em;
@@ -205,6 +207,8 @@
   /* Show the prev/next arrows from tablet up — mobile users swipe instead */
   @media screen and (min-width: 750px) {
     .discover-strength__nav { display: inline-flex; }
+    /* inset the content's leading edge so the heading clears the prev arrow */
+    .discover-strength__overlay { padding-inline-start: clamp(6rem, 8vw, 7.5rem); }
   }
 
   @media (hover: hover) {
