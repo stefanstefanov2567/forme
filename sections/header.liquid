@@ -1130,6 +1130,16 @@
   #header-component .header-actions__cart-icon .cart-bubble__text {
     font-size: var(--font-size--4xs, 0.625rem);
   }
+
+  /* Custom: make the brand logo more prominent on mobile. Scales the
+     configured mobile logo size 1.5x on both dimensions, so aspect ratio is
+     preserved and it still honours the theme's logo-height setting. */
+  @media screen and (max-width: 749px) {
+    #header-component .header-logo__image {
+      width: calc(var(--header-logo-image-width-mobile) * 1.5);
+      height: calc(var(--header-logo-image-height-mobile) * 1.5);
+    }
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}
