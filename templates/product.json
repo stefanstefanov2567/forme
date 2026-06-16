@@ -202,9 +202,36 @@
                     "price_UN6aHJ",
                     "review_MbGGDq"
                   ]
+                },
+                "text_novo_tag": {
+                  "type": "text",
+                  "name": "t:names.title",
+                  "settings": {
+                    "text": "НОВО",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "0.8rem",
+                    "line_height": "normal",
+                    "letter_spacing": "0.12em",
+                    "case": "uppercase",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
+                "text_novo_tag",
                 "text_7VVz8U",
                 "group_b7xNnM"
               ]
@@ -283,7 +310,7 @@
                 "accordion_row_TbgNUF": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Product Details",
+                    "heading": "ХАРАКТЕРИСТИКИ",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
@@ -322,7 +349,7 @@
                 "accordion_row_XMFatY": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Care & Maintenance",
+                    "heading": "ОПИСАНИЕ",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
@@ -361,7 +388,7 @@
                 "accordion_row_kmdwc8": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Size & Fit",
+                    "heading": "ГРИЖА ЗА МАТЕРИЯТА",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
@@ -396,12 +423,24 @@
                   "block_order": [
                     "text_hYWKPd"
                   ]
+                },
+                "accordion_row_delivery": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "ДОСТАВКА И ВРЪЩАНЕ",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {},
+                  "block_order": []
                 }
               },
               "block_order": [
                 "accordion_row_TbgNUF",
                 "accordion_row_XMFatY",
-                "accordion_row_kmdwc8"
+                "accordion_row_kmdwc8",
+                "accordion_row_delivery"
               ]
             }
           },

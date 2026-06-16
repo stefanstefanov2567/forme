@@ -53,6 +53,11 @@
             assign option_id_attribute = 'data-option-id="' | append: fieldset_id | append: '"'
             assign longest_value = 0
           endif
+
+          assign is_color = false
+          if product_option.name == 'Color' or product_option.name == 'Цвят'
+            assign is_color = true
+          endif
         -%}
 
         {%- if product_option.values.size == 1 and variant_style != 'swatch' -%}
@@ -87,7 +92,8 @@
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
               <label
-                class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
+                class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}{% if is_color %} variant-option__button-label--color{% endif %}"
+                {% if is_color %}style="background-color: {% if product_option_value.swatch.color %}{{ product_option_value.swatch.color }}{% else %}{{ product_option_value | downcase | remove: ' ' }}{% endif %};"{% endif %}
               >
                 <input
                   type="radio"
@@ -114,7 +120,9 @@
                     data-current-checked="false"
                   {% endif %}
                 >
-                {% if variant_style == 'swatch' %}
+                {% if is_color %}
+                  <span class="variant-option__button-label__text visually-hidden" data-key="variant-option-text">{{- product_option_value | escape -}}</span>
+                {% elsif variant_style == 'swatch' %}
                   {% liquid
                     assign featured_media = product_option_value.variant.featured_media
 
@@ -308,5 +316,41 @@
   .variant-picker--right .variant-option {
     text-align: right;
     justify-content: right;
+  }
+
+  /* ===== Forced circular colour swatches (option named Color / Цвят) ===== */
+  .variant-option .variant-option__button-label--color {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    min-width: 0;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgb(var(--color-foreground-rgb, 26 26 26) / 0.18);
+    cursor: pointer;
+    outline: 1.5px solid transparent;
+    outline-offset: 2px;
+    transition: outline-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .variant-option .variant-option__button-label--color input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .variant-option .variant-option__button-label--color:has(input:checked) {
+    outline-color: var(--color-foreground, #1a1a1a);
+  }
+  @media (hover: hover) {
+    .variant-option .variant-option__button-label--color:hover {
+      box-shadow: 0 0 0 1px rgb(var(--color-foreground-rgb, 26 26 26) / 0.35);
+    }
+  }
+
+  /* Uppercase option labels (e.g. ЦВЯТ / РАЗМЕР) */
+  .variant-option legend {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 {% endstylesheet %}
