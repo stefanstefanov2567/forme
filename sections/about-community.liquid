@@ -39,8 +39,10 @@
 
       <div class="about-community__stats">
         {%- for n in (1..3) -%}
-          {%- assign num = section.settings['stat_' | append: n | append: '_number'] -%}
-          {%- assign lab = section.settings['stat_' | append: n | append: '_label'] -%}
+          {%- assign num_key = 'stat_' | append: n | append: '_number' -%}
+          {%- assign lab_key = 'stat_' | append: n | append: '_label' -%}
+          {%- assign num = section.settings[num_key] -%}
+          {%- assign lab = section.settings[lab_key] -%}
           {%- if num != blank or lab != blank -%}
             <div class="about-community__stat">
               {%- if num != blank -%}<span class="about-community__stat-number">{{ num }}</span>{%- endif -%}
