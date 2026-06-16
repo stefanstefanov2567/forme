@@ -1,152 +1,227 @@
 {%- comment -%}
-  Custom Newsletter (compact) — sections/custom-newsletter-compact.liquid
-  A tight, centred newsletter band: heading + short subtext + an integrated
-  pill email form (input + submit button). Uses Shopify's customer form, tags
-  signups as "newsletter", and shows inline success / error messages.
-  BEM styles + schema below.
+  Custom Newsletter (split) — sections/custom-newsletter-compact.liquid
+  Two-column newsletter: left = cream panel with left-aligned heading, subtext,
+  an inline connected email form (light input + inset dark button) and a shield
+  trust badge; right = full-bleed image (object-fit: cover). Stacks on mobile,
+  with an option to hide the image there. BEM styles + schema below.
 {%- endcomment -%}
 
-<section class="newsletter-compact color-{{ section.settings.color_scheme }}">
-  <div class="newsletter-compact__inner">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="newsletter-compact__heading">{{ section.settings.heading }}</h2>
-    {%- endif -%}
+{%- capture shield_svg -%}<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3 5 5.7V11c0 4.1 3 6.9 7 8.3 4-1.4 7-4.2 7-8.3V5.7L12 3Z"/><path d="m9 11.6 2 2 4-4"/></svg>{%- endcapture -%}
 
-    {%- if section.settings.subtext != blank -%}
-      <div class="newsletter-compact__subtext">{{ section.settings.subtext }}</div>
-    {%- endif -%}
+<section class="newsletter-split color-{{ section.settings.color_scheme }}{% if section.settings.hide_image_mobile %} newsletter-split--hide-image-mobile{% endif %}">
+  <div class="newsletter-split__inner">
+    <div class="newsletter-split__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="newsletter-split__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
 
-    {%- form 'customer', class: 'newsletter-compact__form' -%}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <div class="newsletter-compact__field">
-        <label class="visually-hidden" for="NewsletterCompact-{{ section.id }}">
-          {{ 'blocks.email_signup.label' | t | default: 'Email' }}
-        </label>
-        <input
-          id="NewsletterCompact-{{ section.id }}"
-          class="newsletter-compact__input"
-          type="email"
-          name="contact[email]"
-          value="{{ form.email }}"
-          placeholder="{{ section.settings.placeholder }}"
-          autocomplete="email"
-          autocorrect="off"
-          autocapitalize="off"
-          required
-        >
-        <button type="submit" class="newsletter-compact__button" name="commit">
-          {{ section.settings.button_label }}
-        </button>
-      </div>
+      {%- if section.settings.subtext != blank -%}
+        <div class="newsletter-split__subtext">{{ section.settings.subtext }}</div>
+      {%- endif -%}
 
-      {%- if form.posted_successfully? -%}
-        <p class="newsletter-compact__message newsletter-compact__message--success" tabindex="-1">
-          {{ section.settings.success_message }}
-        </p>
-      {%- elsif form.errors -%}
-        <p class="newsletter-compact__message newsletter-compact__message--error" tabindex="-1">
-          {{ form.errors | default_errors }}
+      {%- form 'customer', class: 'newsletter-split__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter-split__field">
+          <label class="visually-hidden" for="NewsletterSplit-{{ section.id }}">
+            {{ 'blocks.email_signup.label' | t | default: 'Email' }}
+          </label>
+          <input
+            id="NewsletterSplit-{{ section.id }}"
+            class="newsletter-split__input"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            placeholder="{{ section.settings.placeholder }}"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+          >
+          <button type="submit" class="newsletter-split__button" name="commit">
+            {{ section.settings.button_label }}
+          </button>
+        </div>
+
+        {%- if form.posted_successfully? -%}
+          <p class="newsletter-split__message newsletter-split__message--success" tabindex="-1">{{ section.settings.success_message }}</p>
+        {%- elsif form.errors -%}
+          <p class="newsletter-split__message newsletter-split__message--error" tabindex="-1">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- if section.settings.trust_text != blank -%}
+        <p class="newsletter-split__trust">
+          <span class="newsletter-split__trust-icon" aria-hidden="true">{{ shield_svg }}</span>
+          <span>{{ section.settings.trust_text }}</span>
         </p>
       {%- endif -%}
-    {%- endform -%}
+    </div>
+
+    <div class="newsletter-split__media">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 1600
+          | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 750px) 50vw, 100vw',
+            widths: '500, 800, 1100, 1400, 1600',
+            class: 'newsletter-split__image',
+            alt: section.settings.heading
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'newsletter-split__image newsletter-split__image--ph' }}
+      {%- endif -%}
+    </div>
   </div>
 </section>
 
 {% stylesheet %}
-  .newsletter-compact {
+  .newsletter-split {
     background-color: var(--color-background, #edebe7);
     color: var(--color-foreground, #1a1a1a);
-    padding-block: clamp(2.5rem, 5vw, 4.5rem);
-    padding-inline: clamp(1.25rem, 4vw, 4rem);
   }
 
-  .newsletter-compact__inner {
-    max-width: 38rem;
-    margin-inline: auto;
-    text-align: center;
+  .newsletter-split__inner {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
-  .newsletter-compact__heading {
+  /* ---------- Left: text + form ---------- */
+  .newsletter-split__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    padding: clamp(2rem, 5vw, 4.5rem);
+  }
+
+  .newsletter-split__heading {
     margin: 0;
+    max-width: 16ch;
     font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: 0.01em;
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.12;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
   }
 
-  .newsletter-compact__subtext {
-    margin-block-start: 0.75rem;
+  .newsletter-split__subtext {
+    margin-block-start: clamp(0.85rem, 1.6vw, 1.25rem);
+    max-width: 40ch;
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.65;
     color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.7);
   }
-  .newsletter-compact__subtext > :first-child { margin-block-start: 0; }
-  .newsletter-compact__subtext > :last-child { margin-block-end: 0; }
+  .newsletter-split__subtext > :first-child { margin-block-start: 0; }
+  .newsletter-split__subtext > :last-child { margin-block-end: 0; }
 
-  /* ---------- Integrated pill form (input + button) ---------- */
-  .newsletter-compact__form {
-    margin-block-start: clamp(1.25rem, 2.5vw, 1.75rem);
+  /* ---------- Connected input group (white input + inset dark button) ---------- */
+  .newsletter-split__form {
+    width: 100%;
+    margin-block-start: clamp(1.5rem, 2.5vw, 2rem);
   }
 
-  .newsletter-compact__field {
+  .newsletter-split__field {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: stretch;
+    width: 100%;
     max-width: 30rem;
-    margin-inline: auto;
-    padding: 0.3rem 0.3rem 0.3rem 1.25rem;
-    border: 1px solid rgb(var(--color-foreground-rgb, 26 26 26) / 0.28);
-    border-radius: 999px;
-    background-color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.02);
+    border: 1px solid rgb(var(--color-foreground-rgb, 26 26 26) / 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ffffff;
   }
 
-  .newsletter-compact__input {
+  .newsletter-split__input {
     flex: 1 1 auto;
     min-width: 0;
     border: none;
     background: transparent;
-    color: inherit;
+    color: #1a1a1a;
     font: inherit;
     font-size: 0.95rem;
+    padding: 0.95rem 1.1rem;
   }
-  .newsletter-compact__input::placeholder {
-    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.5);
-  }
-  .newsletter-compact__input:focus { outline: none; }
-  .newsletter-compact__field:focus-within {
-    border-color: var(--color-foreground, #1a1a1a);
-  }
+  .newsletter-split__input::placeholder { color: rgba(26, 26, 26, 0.45); }
+  .newsletter-split__input:focus { outline: none; }
+  .newsletter-split__field:focus-within { border-color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.55); }
 
-  .newsletter-compact__button {
+  .newsletter-split__button {
     flex: none;
+    margin: 0.3rem;
     border: none;
-    border-radius: 999px;
+    border-radius: 7px;
     background-color: var(--color-foreground, #1a1a1a);
-    color: var(--color-background, #fff);
-    padding: 0.7rem 1.4rem;
+    color: var(--color-background, #ffffff);
+    padding: 0 1.4rem;
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    white-space: nowrap;
     cursor: pointer;
     transition: opacity 0.2s ease;
   }
   @media (hover: hover) {
-    .newsletter-compact__button:hover { opacity: 0.85; }
+    .newsletter-split__button:hover { opacity: 0.85; }
   }
 
-  .newsletter-compact__message {
+  .newsletter-split__message {
     margin-block: 0.85rem 0;
     font-size: 0.85rem;
-    letter-spacing: 0.02em;
   }
-  .newsletter-compact__message--success { color: var(--color-foreground, #1a1a1a); font-weight: 600; }
-  .newsletter-compact__message--error { color: #b3261e; }
+  .newsletter-split__message--success { font-weight: 600; }
+  .newsletter-split__message--error { color: #b3261e; }
+
+  /* ---------- Trust badge ---------- */
+  .newsletter-split__trust {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+    font-size: 0.8rem;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.6);
+  }
+  .newsletter-split__trust-icon { display: inline-flex; flex: none; }
+
+  /* ---------- Right: image ---------- */
+  .newsletter-split__media {
+    position: relative;
+    aspect-ratio: 16 / 11;
+  }
+  .newsletter-split__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .newsletter-split__image--ph { opacity: 0.6; }
+
+  .newsletter-split--hide-image-mobile .newsletter-split__media { display: none; }
+
+  /* ---------- Desktop: 2 columns ---------- */
+  @media screen and (min-width: 750px) {
+    .newsletter-split__inner {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+      min-height: clamp(22rem, 34vw, 32rem);
+    }
+    .newsletter-split__media {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .newsletter-split__button { transition: none; }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Newsletter (compact)",
+  "name": "Newsletter (split)",
   "class": "custom-newsletter-compact-section",
   "disabled_on": {
     "groups": ["header", "footer"]
@@ -162,19 +237,19 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Присъедини се към движението"
+      "default": "Движи се. Вдъхновявай."
     },
     {
       "type": "richtext",
       "id": "subtext",
       "label": "Subtext",
-      "default": "<p>Абонирай се за вдъхновение, новини и ексклузивни оферти — директно в пощата ти.</p>"
+      "default": "<p>Абонирай се за нашия бюлетин и получавай ранен достъп до нови колекции, специални предложения и вдъхновение за активен живот.</p>"
     },
     {
       "type": "text",
       "id": "placeholder",
       "label": "Input placeholder",
-      "default": "Твоят имейл адрес"
+      "default": "Въведи своя имейл адрес"
     },
     {
       "type": "text",
@@ -184,14 +259,35 @@
     },
     {
       "type": "text",
+      "id": "trust_text",
+      "label": "Trust badge text",
+      "default": "Без спам. Само новини, които си заслужават."
+    },
+    {
+      "type": "text",
       "id": "success_message",
       "label": "Success message",
       "default": "Благодарим! Вече си част от движението."
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image (right column)"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_image_mobile",
+      "label": "Hide image on mobile",
+      "default": false
     }
   ],
   "presets": [
     {
-      "name": "Newsletter (compact)"
+      "name": "Newsletter (split)"
     }
   ]
 }
