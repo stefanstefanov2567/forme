@@ -64,11 +64,21 @@
     "about_story": {
       "type": "about-story",
       "settings": {}
+    },
+    "about_community": {
+      "type": "about-community",
+      "settings": {}
+    },
+    "instagram": {
+      "type": "custom-instagram-feed",
+      "settings": {}
     }
   },
   "order": [
     "about_hero",
     "value_props",
-    "about_story"
+    "about_story",
+    "about_community",
+    "instagram"
   ]
 }

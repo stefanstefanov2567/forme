@@ -1,0 +1,270 @@
+{%- comment -%}
+  About Community — sections/about-community.liquid
+  Top: 2-column band — left (~50%) a large edge-to-edge featured image, right
+  (~50%) vertically-centred tag / light heading / subtext / a 3-up stats row.
+  Bottom: a full-width row of 5 sharp-cornered images. Mobile stacks
+  (image → text → stats → a horizontal image scroller). Everything editable.
+  BEM styles + schema below.
+{%- endcomment -%}
+
+<section class="about-community color-{{ section.settings.color_scheme }}">
+  <div class="about-community__top">
+    <div class="about-community__feature">
+      {%- if section.settings.feature_image != blank -%}
+        {{
+          section.settings.feature_image
+          | image_url: width: 1400
+          | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 750px) 50vw, 100vw',
+            widths: '600, 900, 1200, 1400',
+            class: 'about-community__feature-image',
+            alt: section.settings.heading
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'about-community__feature-image about-community__feature-image--ph' }}
+      {%- endif -%}
+    </div>
+
+    <div class="about-community__content">
+      {%- if section.settings.tag != blank -%}
+        <p class="about-community__tag">{{ section.settings.tag }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="about-community__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <div class="about-community__subtext">{{ section.settings.subtext }}</div>
+      {%- endif -%}
+
+      <div class="about-community__stats">
+        {%- for n in (1..3) -%}
+          {%- assign num = section.settings['stat_' | append: n | append: '_number'] -%}
+          {%- assign lab = section.settings['stat_' | append: n | append: '_label'] -%}
+          {%- if num != blank or lab != blank -%}
+            <div class="about-community__stat">
+              {%- if num != blank -%}<span class="about-community__stat-number">{{ num }}</span>{%- endif -%}
+              {%- if lab != blank -%}<span class="about-community__stat-label">{{ lab }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="about-community__gallery">
+    {%- for n in (1..5) -%}
+      {%- assign key = 'image_' | append: n -%}
+      {%- assign img = section.settings[key] -%}
+      <div class="about-community__gallery-item">
+        {%- if img != blank -%}
+          {{
+            img
+            | image_url: width: 700
+            | image_tag:
+              loading: 'lazy',
+              sizes: '(min-width: 750px) 20vw, 55vw',
+              widths: '250, 400, 550, 700',
+              class: 'about-community__gallery-image',
+              alt: section.settings.heading
+          }}
+        {%- else -%}
+          {%- capture phn -%}{% cycle 'acph': 'lifestyle-1', 'lifestyle-2' %}{%- endcapture -%}
+          {{ phn | placeholder_svg_tag: 'about-community__gallery-image about-community__gallery-image--ph' }}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .about-community {
+    background-color: var(--color-background, #f4f1ec);
+    color: var(--color-foreground, #1a1a1a);
+  }
+
+  /* ---------- Top: image + content (mobile stacked) ---------- */
+  .about-community__top {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .about-community__feature {
+    aspect-ratio: 4 / 3;
+  }
+  .about-community__feature-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .about-community__feature-image--ph { opacity: 0.7; }
+
+  .about-community__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4.5rem);
+  }
+  .about-community__tag {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.55);
+  }
+  .about-community__heading {
+    margin: 1rem 0 0;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  }
+  .about-community__subtext {
+    margin-block-start: 1rem;
+    max-width: 40ch;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.7);
+  }
+  .about-community__subtext > :first-child { margin-block-start: 0; }
+  .about-community__subtext > :last-child { margin-block-end: 0; }
+
+  /* ---------- Stats ---------- */
+  .about-community__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-block-start: clamp(1.75rem, 3vw, 2.75rem);
+  }
+  .about-community__stat-number {
+    display: block;
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .about-community__stat-label {
+    display: block;
+    margin-block-start: 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.6);
+  }
+
+  /* ---------- Bottom: 5 sharp images (mobile = horizontal scroller) ---------- */
+  .about-community__gallery {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .about-community__gallery::-webkit-scrollbar { display: none; }
+
+  .about-community__gallery-item {
+    flex: 0 0 auto;
+    width: min(55vw, 240px);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    scroll-snap-align: start;
+    background-color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.06);
+  }
+  .about-community__gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .about-community__gallery-image--ph { opacity: 0.5; }
+
+  /* ---------- Desktop ---------- */
+  @media screen and (min-width: 750px) {
+    .about-community__top {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+      min-height: clamp(26rem, 38vw, 34rem);
+    }
+    .about-community__feature {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+    .about-community__gallery {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      overflow: visible;
+    }
+    .about-community__gallery-item {
+      width: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "About community",
+  "class": "about-community-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Featured image (top left)"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag",
+      "default": "ПОВЕЧЕ ОТ МАРКА"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FORME е общност."
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>Тук споделяме мотивация, подкрепа и вдъхновение. Защото заедно сме по-силни.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Stats"
+    },
+    { "type": "text", "id": "stat_1_number", "label": "Stat 1 number", "default": "10K+" },
+    { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "доволни клиенти" },
+    { "type": "text", "id": "stat_2_number", "label": "Stat 2 number", "default": "3" },
+    { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "години развитие" },
+    { "type": "text", "id": "stat_3_number", "label": "Stat 3 number", "default": "1" },
+    { "type": "text", "id": "stat_3_label", "label": "Stat 3 label", "default": "обща мисия" },
+    {
+      "type": "header",
+      "content": "Bottom gallery (5 images)"
+    },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2" },
+    { "type": "image_picker", "id": "image_3", "label": "Image 3" },
+    { "type": "image_picker", "id": "image_4", "label": "Image 4" },
+    { "type": "image_picker", "id": "image_5", "label": "Image 5" }
+  ],
+  "presets": [
+    {
+      "name": "About community"
+    }
+  ]
+}
+{% endschema %}
