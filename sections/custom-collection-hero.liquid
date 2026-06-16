@@ -1,0 +1,185 @@
+{%- comment -%}
+  Custom Collection Hero — sections/custom-collection-hero.liquid
+  Full-bleed collection hero. Background = a custom image (desktop/mobile) if
+  provided, otherwise the collection's own image, otherwise a placeholder.
+  Dark left gradient for legibility; middle-left overlay pulls the live
+  collection.title (h1) + collection.description. BEM styles + schema below.
+{%- endcomment -%}
+
+{%- liquid
+  assign hero_img = section.settings.image | default: collection.image
+  assign hero_img_mobile = section.settings.image_mobile | default: section.settings.image | default: collection.image
+  assign hero_title = collection.title | default: section.settings.fallback_heading | default: 'Collection'
+-%}
+
+<section
+  class="collection-hero"
+  style="--chero-overlay: {{ section.settings.overlay_opacity | default: 45 | divided_by: 100.0 }}; --chero-height: {{ section.settings.section_height | default: 70 }}vh;"
+>
+  <div class="collection-hero__media">
+    <picture class="collection-hero__picture">
+      {%- if hero_img_mobile != blank -%}
+        <source
+          media="(max-width: 749px)"
+          srcset="{{ hero_img_mobile | image_url: width: 1200 }} 1x, {{ hero_img_mobile | image_url: width: 1800 }} 1.5x"
+        >
+      {%- endif -%}
+      {%- if hero_img != blank -%}
+        {{
+          hero_img
+          | image_url: width: 2400
+          | image_tag:
+            loading: 'eager',
+            sizes: '100vw',
+            widths: '800, 1200, 1600, 2000, 2400',
+            class: 'collection-hero__image',
+            alt: hero_title
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'collection-hero__image collection-hero__image--ph' }}
+      {%- endif -%}
+    </picture>
+  </div>
+
+  <div class="collection-hero__content">
+    <h1 class="collection-hero__title">{{ hero_title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="collection-hero__desc">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .collection-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    min-height: var(--chero-height, 70vh);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .collection-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .collection-hero__picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .collection-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .collection-hero__image--ph { opacity: 0.7; }
+
+  /* dark gradient — strongest on the left where the text sits */
+  .collection-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, var(--chero-overlay, 0.45)) 0%,
+      rgba(0, 0, 0, calc(var(--chero-overlay, 0.45) * 0.4)) 45%,
+      rgba(0, 0, 0, 0) 72%
+    );
+  }
+
+  .collection-hero__content {
+    position: relative;
+    width: 100%;
+    max-width: 44rem;
+    padding-inline: clamp(1.5rem, 6vw, 6rem);
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .collection-hero__title {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .collection-hero__desc {
+    margin-block-start: clamp(0.85rem, 1.6vw, 1.35rem);
+    max-width: 42ch;
+    font-size: clamp(0.85rem, 1.4vw, 1rem);
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.3);
+  }
+  .collection-hero__desc > :first-child { margin-block-start: 0; }
+  .collection-hero__desc > :last-child { margin-block-end: 0; }
+
+  @media screen and (max-width: 749px) {
+    .collection-hero { min-height: min(var(--chero-height, 70vh), 78svh); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection hero",
+  "class": "custom-collection-hero-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The heading and description are pulled automatically from the collection. Upload images below only to override the collection's own image."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image (desktop)",
+      "info": "Overrides the collection image."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Background image (mobile)",
+      "info": "Optional. Falls back to the desktop / collection image."
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section height",
+      "min": 40,
+      "max": 90,
+      "step": 5,
+      "unit": "vh",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay darkness",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "fallback_heading",
+      "label": "Fallback heading",
+      "info": "Shown only if viewed outside a collection (e.g. in the editor).",
+      "default": "Колекция"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection hero"
+    }
+  ]
+}
+{% endschema %}

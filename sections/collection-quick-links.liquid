@@ -1,0 +1,205 @@
+{%- comment -%}
+  Collection Quick Links — sections/collection-quick-links.liquid
+  A row of landscape sub-category cards beneath the collection hero: 4-up grid
+  on desktop, horizontal scroll-snap slider on mobile. Each card = rounded
+  landscape image + a caption row (left-aligned uppercase title / right arrow)
+  with a thin underline. Block-driven (image, title, link). BEM + schema below.
+{%- endcomment -%}
+
+{%- capture arrow_r -%}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>{%- endcapture -%}
+
+<section
+  class="quick-links color-{{ section.settings.color_scheme }}"
+  style="--ql-radius: {{ section.settings.card_corner_radius | default: 12 }}px;"
+>
+  {%- if section.blocks.size > 0 -%}
+    <ul class="quick-links__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="quick-links__item" {{ block.shopify_attributes }}>
+          <a class="quick-links__card" href="{{ block.settings.link | default: '#' }}">
+            <div class="quick-links__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    sizes: '(min-width: 750px) 23vw, 78vw',
+                    widths: '340, 500, 680, 800',
+                    class: 'quick-links__image',
+                    alt: block.settings.title
+                }}
+              {%- else -%}
+                {%- capture phn -%}{% cycle 'qlph': 'lifestyle-1', 'lifestyle-2' %}{%- endcapture -%}
+                {{ phn | placeholder_svg_tag: 'quick-links__image quick-links__image--ph' }}
+              {%- endif -%}
+            </div>
+            <div class="quick-links__caption">
+              {%- if block.settings.title != blank -%}
+                <span class="quick-links__title">{{ block.settings.title }}</span>
+              {%- endif -%}
+              <span class="quick-links__arrow" aria-hidden="true">{{ arrow_r }}</span>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .quick-links {
+    --ql-gutter: clamp(1rem, 4vw, 4rem);
+
+    background-color: var(--color-background, #edebe7);
+    color: var(--color-foreground, #1a1a1a);
+    padding-block: clamp(1.75rem, 3.5vw, 3rem);
+    padding-inline: var(--ql-gutter);
+  }
+
+  /* ---------- Mobile: horizontal scroll-snap slider ---------- */
+  .quick-links__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-block-end: 0.25rem;
+  }
+  .quick-links__grid::-webkit-scrollbar { display: none; }
+
+  .quick-links__item {
+    flex: 0 0 auto;
+    width: min(78vw, 340px);
+    scroll-snap-align: start;
+  }
+
+  .quick-links__card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .quick-links__media {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--ql-radius, 12px);
+    overflow: hidden;
+    background-color: #f0efec;
+  }
+
+  .quick-links__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .quick-links__image--ph { opacity: 0.5; }
+
+  /* ---------- Caption row: title left, arrow right, thin underline ---------- */
+  .quick-links__caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block-start: 0.85rem;
+    padding-block-end: 0.85rem;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb, 26 26 26) / 0.18);
+  }
+
+  .quick-links__title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .quick-links__arrow {
+    display: inline-flex;
+    flex: none;
+    color: inherit;
+    transition: transform 0.25s ease;
+  }
+
+  @media (hover: hover) {
+    .quick-links__card:hover .quick-links__image { transform: scale(1.05); }
+    .quick-links__card:hover .quick-links__arrow { transform: translateX(4px); }
+  }
+
+  .quick-links__card:focus-visible {
+    outline: 2px solid var(--color-foreground, #1a1a1a);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Desktop: 4-up grid ---------- */
+  @media screen and (min-width: 750px) {
+    .quick-links__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(1rem, 2vw, 1.75rem);
+      overflow: visible;
+    }
+    .quick-links__item { width: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quick-links__image,
+    .quick-links__arrow {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection quick links",
+  "class": "collection-quick-links-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "range",
+      "id": "card_corner_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Quick link",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Категория" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection quick links",
+      "blocks": [
+        { "type": "link", "settings": { "title": "Нови" } },
+        { "type": "link", "settings": { "title": "Топове" } },
+        { "type": "link", "settings": { "title": "Клинове" } },
+        { "type": "link", "settings": { "title": "Сетове" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
