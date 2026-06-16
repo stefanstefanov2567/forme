@@ -359,6 +359,31 @@
       white-space: nowrap;
     }
   }
+
+  /* ===== Forme PDP — premium styling overrides ===== */
+  /* Muted beige add-to-cart button */
+  .buy-buttons-block .add-to-cart-button {
+    background-color: #a8998a;
+    border-color: #a8998a;
+    color: #ffffff;
+  }
+  @media (hover: hover) {
+    .buy-buttons-block .add-to-cart-button:hover {
+      background-color: #9b8c7c;
+      border-color: #9b8c7c;
+    }
+  }
+
+  /* Quantity selector + add-to-cart inline on one row; button fills the rest */
+  .product-form-buttons:not(.product-form-buttons--stacked) {
+    display: flex;
+    align-items: stretch;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+  }
+  .product-form-buttons:not(.product-form-buttons--stacked) .add-to-cart-button {
+    flex: 1 1 auto;
+  }
 {% endstylesheet %}
 
 {% schema %}
