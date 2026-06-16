@@ -168,6 +168,30 @@
     .newsletter-split__button:hover { opacity: 0.85; }
   }
 
+  /* Very small screens: stack input + button so the field never cramps or overflows */
+  @media screen and (max-width: 480px) {
+    .newsletter-split__field {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.6rem;
+      max-width: none;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+    }
+    .newsletter-split__input {
+      border: 1px solid rgb(var(--color-foreground-rgb, 26 26 26) / 0.2);
+      border-radius: 10px;
+      background-color: #ffffff;
+    }
+    .newsletter-split__button {
+      margin: 0;
+      padding: 0.95rem 1.4rem;
+      border-radius: 10px;
+    }
+  }
+
   .newsletter-split__message {
     margin-block: 0.85rem 0;
     font-size: 0.85rem;
