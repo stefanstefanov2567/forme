@@ -69,8 +69,8 @@
       "type": "about-community",
       "settings": {}
     },
-    "instagram": {
-      "type": "custom-instagram-feed",
+    "instagram_dark": {
+      "type": "custom-instagram-dark",
       "settings": {}
     }
   },
@@ -79,6 +79,6 @@
     "value_props",
     "about_story",
     "about_community",
-    "instagram"
+    "instagram_dark"
   ]
 }
