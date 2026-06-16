@@ -207,7 +207,7 @@
                   "type": "text",
                   "name": "t:names.title",
                   "settings": {
-                    "text": "НОВО",
+                    "text": "<p>НОВО</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
