@@ -1,0 +1,231 @@
+{%- comment -%}
+  Custom FAQ — sections/custom-faq.liquid
+  Centred header (tag / light heading / subtext) over a max-width accordion list.
+  Each item is a native <details>/<summary> (accessible, no JS) rendered as a
+  white block on the cream section, with a CSS +/− icon. Text only — no images
+  inside the accordions. Block-driven (question + richtext answer). BEM + schema.
+{%- endcomment -%}
+
+<section class="faq color-{{ section.settings.color_scheme }}">
+  {%- if section.settings.top_tag != blank or section.settings.heading != blank or section.settings.subtext != blank -%}
+    <div class="faq__header">
+      {%- if section.settings.top_tag != blank -%}
+        <p class="faq__tag">{{ section.settings.top_tag }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="faq__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="faq__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="faq__list">
+      {%- for block in section.blocks -%}
+        <details
+          class="faq__item"
+          {% if forloop.first %}open{% endif %}
+          {{ block.shopify_attributes }}
+        >
+          <summary class="faq__summary">
+            <span class="faq__icon" aria-hidden="true"></span>
+            <span class="faq__question">{{ block.settings.question }}</span>
+          </summary>
+          {%- if block.settings.answer != blank -%}
+            <div class="faq__answer">{{ block.settings.answer }}</div>
+          {%- endif -%}
+        </details>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .faq {
+    --faq-gutter: clamp(1rem, 4vw, 4rem);
+    --faq-pad-inline: clamp(1.25rem, 3vw, 2rem);
+    --faq-pad-block: clamp(1.2rem, 2.4vw, 1.6rem);
+    --faq-icon: 1rem;
+    --faq-gap: clamp(1rem, 2.5vw, 1.75rem);
+
+    background-color: var(--color-background, #edebe7);
+    color: var(--color-foreground, #1a1a1a);
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+    padding-inline: var(--faq-gutter);
+  }
+
+  /* ---------- Header ---------- */
+  .faq__header {
+    max-width: 50rem;
+    margin: 0 auto clamp(2rem, 4vw, 3rem);
+    text-align: center;
+  }
+  .faq__tag {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.55);
+  }
+  .faq__heading {
+    margin: 0.75rem 0 0;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+  }
+  .faq__subtext {
+    margin: 0.85rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.65);
+  }
+
+  /* ---------- Accordion list ---------- */
+  .faq__list {
+    max-width: 50rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq__item {
+    background-color: #ffffff;
+    border: 1px solid rgb(var(--color-foreground-rgb, 26 26 26) / 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .faq__summary {
+    display: flex;
+    align-items: center;
+    gap: var(--faq-gap);
+    padding: var(--faq-pad-block) var(--faq-pad-inline);
+    cursor: pointer;
+    list-style: none;
+    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  .faq__summary::-webkit-details-marker { display: none; }
+  @media (hover: hover) {
+    .faq__summary:hover { color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.65); }
+  }
+  .faq__summary:focus-visible {
+    outline: 2px solid var(--color-foreground, #1a1a1a);
+    outline-offset: -2px;
+  }
+
+  .faq__question { flex: 1 1 auto; }
+
+  /* +/− icon */
+  .faq__icon {
+    position: relative;
+    flex: none;
+    width: var(--faq-icon);
+    height: var(--faq-icon);
+  }
+  .faq__icon::before,
+  .faq__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: currentColor;
+  }
+  .faq__icon::before {
+    width: 100%;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
+  .faq__icon::after {
+    width: 1.5px;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .faq__item[open] .faq__icon::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  /* ---------- Answer ---------- */
+  .faq__answer {
+    padding: 0 var(--faq-pad-inline) var(--faq-pad-block);
+    padding-inline-start: calc(var(--faq-pad-inline) + var(--faq-icon) + var(--faq-gap));
+    max-width: 60ch;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgb(var(--color-foreground-rgb, 26 26 26) / 0.7);
+  }
+  .faq__answer > :first-child { margin-block-start: 0; }
+  .faq__answer > :last-child { margin-block-end: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq__icon::after { transition: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "class": "custom-faq-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "text",
+      "id": "top_tag",
+      "label": "Top tag",
+      "default": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Всичко, което трябва да знаете преди да направите своята поръчка."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Въпрос" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Добавете отговор тук.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "Как да избера правилния размер?", "answer": "<p>Използвайте нашата таблица с размери на всяка продуктова страница. Ако сте между два размера, препоръчваме по-големия за по-свободно усещане или по-малкия за по-плътно прилягане.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Какви са сроковете за доставка?" } },
+        { "type": "faq_item", "settings": { "question": "Мога ли да върна или заменя продукт?" } },
+        { "type": "faq_item", "settings": { "question": "Как да се грижа за моята активна екипировка?" } },
+        { "type": "faq_item", "settings": { "question": "От какви материи са изработени продуктите?" } },
+        { "type": "faq_item", "settings": { "question": "Имате ли физически магазин?" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

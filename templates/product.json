@@ -795,11 +795,63 @@
     "gallery": {
       "type": "custom-asymmetrical-gallery",
       "settings": {}
+    },
+    "faq": {
+      "type": "custom-faq",
+      "blocks": {
+        "faq_size": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Как да избера правилния размер?",
+            "answer": "<p>Използвайте нашата таблица с размери на всяка продуктова страница. Ако сте между два размера, препоръчваме по-големия за по-свободно усещане или по-малкия за по-плътно прилягане.</p>"
+          }
+        },
+        "faq_delivery": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Какви са сроковете за доставка?"
+          }
+        },
+        "faq_return": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Мога ли да върна или заменя продукт?"
+          }
+        },
+        "faq_care": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Как да се грижа за моята активна екипировка?"
+          }
+        },
+        "faq_material": {
+          "type": "faq_item",
+          "settings": {
+            "question": "От какви материи са изработени продуктите?"
+          }
+        },
+        "faq_store": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Имате ли физически магазин?"
+          }
+        }
+      },
+      "block_order": [
+        "faq_size",
+        "faq_delivery",
+        "faq_return",
+        "faq_care",
+        "faq_material",
+        "faq_store"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "product-information",
     "gallery",
+    "faq",
     "product_recommendations_UeDczP",
     "collection_list_RGddHj"
   ]
