@@ -484,6 +484,8 @@
         "heading": "СЪЗДАДЕНО ЗА ДВИЖЕНИЕ. НОСЕНО С УВЕРЕНОСТ.",
         "subtext": "Истински моменти. Истински жени. Истинска сила.",
         "corner_radius": 12,
+        "image_1": "shopify://shop_images/yoga.png",
+        "image_2": "shopify://shop_images/yoga.png",
         "bottom_tag": "СПОДЕЛИ СВОЯ СТИЛ",
         "hashtag": "#forme"
       }
@@ -935,7 +937,9 @@
       ],
       "settings": {
         "color_scheme": "",
-        "heading": "ЗАЩО ДА ИЗБЕРЕТЕ НАС"
+        "heading": "ЗАЩО ДА ИЗБЕРЕТЕ НАС",
+        "show_header": true,
+        "show_vertical_dividers": false
       }
     },
     "instagram": {
@@ -946,7 +950,8 @@
         "heading": "ПОСЛЕДВАЙ НИ В INSTAGRAM",
         "subtext": "Вдъхновение за движение, баланс и активен начин на живот.",
         "handle": "@forme",
-        "link": ""
+        "link": "",
+        "image_1": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png"
       }
     }
   },
