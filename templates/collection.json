@@ -32,6 +32,7 @@
         "ql_tops": {
           "type": "link",
           "settings": {
+            "image": "shopify://shop_images/girl-training.png",
             "title": "Топове",
             "link": ""
           }
@@ -39,6 +40,7 @@
         "ql_leggings": {
           "type": "link",
           "settings": {
+            "image": "shopify://shop_images/running-women.png",
             "title": "Клинове",
             "link": ""
           }
@@ -46,6 +48,7 @@
         "ql_sets": {
           "type": "link",
           "settings": {
+            "image": "shopify://shop_images/pilates.png",
             "title": "Сетове",
             "link": ""
           }
