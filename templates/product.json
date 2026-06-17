@@ -486,6 +486,11 @@
         "corner_radius": 12,
         "image_1": "shopify://shop_images/yoga.png",
         "image_2": "shopify://shop_images/yoga.png",
+        "image_3": "shopify://shop_images/women-activewear.png",
+        "image_4": "shopify://shop_images/running-women.png",
+        "image_5": "shopify://shop_images/women-training.png",
+        "image_6": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
+        "image_7": "shopify://shop_images/pilates.png",
         "bottom_tag": "СПОДЕЛИ СВОЯ СТИЛ",
         "hashtag": "#forme"
       }
@@ -951,7 +956,10 @@
         "subtext": "Вдъхновение за движение, баланс и активен начин на живот.",
         "handle": "@forme",
         "link": "",
-        "image_1": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png"
+        "image_1": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
+        "image_2": "shopify://shop_images/tenis-women.png",
+        "image_3": "shopify://shop_images/pilates.png",
+        "image_4": "shopify://shop_images/running-women.png"
       }
     }
   },
