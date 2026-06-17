@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "collection_hero": {
@@ -15,6 +24,7 @@
         "ql_new": {
           "type": "link",
           "settings": {
+            "image": "shopify://shop_images/yoga.png",
             "title": "Нови",
             "link": ""
           }
@@ -243,7 +253,17 @@
     },
     "newsletter": {
       "type": "custom-newsletter-compact",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "heading": "Движи се. Вдъхновявай.",
+        "subtext": "<p>Абонирай се за нашия бюлетин и получавай ранен достъп до нови колекции, специални предложения и вдъхновение за активен живот.</p>",
+        "placeholder": "Въведи своя имейл адрес",
+        "button_label": "Абонирай се",
+        "trust_text": "Без спам. Само новини, които си заслужават.",
+        "success_message": "Благодарим! Вече си част от движението.",
+        "image": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
+        "hide_image_mobile": false
+      }
     }
   },
   "order": [
