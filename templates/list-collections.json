@@ -71,7 +71,7 @@
         "collection": "ice-collection",
         "products_to_show": 4,
         "link_label": "Виж всички",
-        "link_url": ""
+        "link_url": "shopify://collections/ice-collection"
       }
     },
     "collection_banner": {
