@@ -191,6 +191,7 @@
         "promo_RRtwQH": {
           "type": "promo",
           "settings": {
+            "image": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
             "label": "Нова колекция",
             "url": ""
           }
@@ -253,6 +254,7 @@
         "category_WBYEMa": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/girl-training.png",
             "icon": "<svg viewbox=\"0 0 24 24\" width=\"32\" height=\"32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\"><path d=\"M6.5 8v8M3.5 10v4M17.5 8v8M20.5 10v4M6.5 12h11\"></path></svg>",
             "title": "Fitness",
             "description": "Сила, енергия и дисциплина.",
@@ -262,6 +264,7 @@
         "category_m8wxjM": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/pilates.png",
             "icon": "<svg viewbox=\"0 0 24 24\" width=\"32\" height=\"32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"8\" width=\"18\" height=\"8\" rx=\"4\"></rect><path d=\"M7 8v8\"></path><circle cx=\"7\" cy=\"12\" r=\"1.1\"></circle></svg>",
             "title": "Pilates",
             "description": "Контрол, стойка и вътрешна сила.",
@@ -271,6 +274,7 @@
         "category_kbwdpY": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/tenis-women.png",
             "icon": "<svg viewbox=\"0 0 24 24\" width=\"32\" height=\"32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><ellipse cx=\"13\" cy=\"8\" rx=\"6\" ry=\"7\"></ellipse><path d=\"M8.6 12.6 4 20\"></path><path d=\"M9.5 5l7.5 4.6M12 3.6 17 11\"></path></svg>",
             "title": "Tennis",
             "description": "Фокус, скорост и стратегия.",
@@ -280,6 +284,7 @@
         "category_PDp6Dt": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/running-women.png",
             "icon": "<svg viewbox=\"0 0 24 24\" width=\"32\" height=\"32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linejoin=\"round\"><path d=\"M2 16v-2.5l5-3 2 2 4-3.5 3.2 3c3 .2 5.8 1.1 5.8 3.5V17H2Z\"></path><path d=\"M2 16.8h20\" stroke-linecap=\"round\"></path></svg>",
             "title": "Running",
             "description": "Издръжливост, цел и свобода.",
@@ -352,6 +357,7 @@
         "block_LkUTca": {
           "type": "block",
           "settings": {
+            "image": "shopify://shop_images/girl-training.png",
             "text_style": "large",
             "subheading": "Summer",
             "heading": "State of mind",
@@ -363,6 +369,7 @@
         "block_x9pmbb": {
           "type": "block",
           "settings": {
+            "image": "shopify://shop_images/pilates.png",
             "text_style": "small",
             "subheading": "",
             "heading": "Do not disturb",
@@ -374,6 +381,7 @@
         "block_CJebXC": {
           "type": "block",
           "settings": {
+            "image": "shopify://shop_images/running-women.png",
             "text_style": "small",
             "subheading": "",
             "heading": "",
@@ -385,6 +393,7 @@
         "block_LfNYw6": {
           "type": "block",
           "settings": {
+            "image": "shopify://shop_images/women-activewear.png",
             "text_style": "small",
             "subheading": "",
             "heading": "Made for anywhere",
@@ -469,30 +478,35 @@
         "instagram_post_AjKrTh": {
           "type": "instagram_post",
           "settings": {
+            "image": "shopify://shop_images/tenis-women.png",
             "url": ""
           }
         },
         "instagram_post_eBTYUz": {
           "type": "instagram_post",
           "settings": {
+            "image": "shopify://shop_images/running-women.png",
             "url": ""
           }
         },
         "instagram_post_qBnF7F": {
           "type": "instagram_post",
           "settings": {
+            "image": "shopify://shop_images/girl-training.png",
             "url": ""
           }
         },
         "instagram_post_YweNHg": {
           "type": "instagram_post",
           "settings": {
+            "image": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
             "url": ""
           }
         },
         "instagram_post_JtCEwP": {
           "type": "instagram_post",
           "settings": {
+            "image": "shopify://shop_images/women-training.png",
             "url": ""
           }
         }
@@ -526,18 +540,21 @@
         "value_JJ3kDh": {
           "type": "value",
           "settings": {
+            "image": "shopify://shop_images/running-women.png",
             "text": "Details\nMatter"
           }
         },
         "value_WfTfLM": {
           "type": "value",
           "settings": {
+            "image": "shopify://shop_images/women-activewear.png",
             "text": "Focus\nDiscipline\nProgress"
           }
         },
         "value_AKxHtj": {
           "type": "value",
           "settings": {
+            "image": "shopify://shop_images/yoga.png",
             "text": "Performance\nMeets\nElegance"
           }
         }
