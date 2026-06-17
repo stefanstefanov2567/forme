@@ -87,7 +87,8 @@
         "heading": "Началото на една идея, родена от личен опит.",
         "body": "<p>FORME се роди от едно просто прозрение — че истинската увереност идва от движението. Търсехме екипировка, която да издържа на ритъма ни, без да прави компромис със стила.</p><p>Така започна пътят ни: да създаваме активно облекло, което вдъхновява жените да се движат свободно, да се чувстват уверени и да бъдат най-добрата версия на себе си — всеки ден.</p>",
         "image_1": "shopify://shop_images/yoga.png",
-        "image_2": "shopify://shop_images/girl-training.png"
+        "image_2": "shopify://shop_images/girl-training.png",
+        "image_3": "shopify://shop_images/tenis-women.png"
       }
     },
     "about_community": {
@@ -104,7 +105,11 @@
         "stat_2_label": "години развитие",
         "stat_3_number": "1",
         "stat_3_label": "обща мисия",
-        "image_1": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png"
+        "image_1": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
+        "image_2": "shopify://shop_images/tenis-women.png",
+        "image_3": "shopify://shop_images/women-activewear.png",
+        "image_4": "shopify://shop_images/running-women.png",
+        "image_5": "shopify://shop_images/pilates.png"
       }
     },
     "instagram_dark": {
@@ -116,7 +121,10 @@
         "official_label": "OFFICIAL",
         "link": "",
         "image_1": "shopify://shop_images/women-training_fd5db87d-cfce-4ebd-b93c-0c601fbca103.png",
-        "image_2": "shopify://shop_images/yoga.png"
+        "image_2": "shopify://shop_images/yoga.png",
+        "image_3": "shopify://shop_images/tenis-women.png",
+        "image_4": "shopify://shop_images/women-activewear.png",
+        "image_5": "shopify://shop_images/pilates.png"
       }
     }
   },
