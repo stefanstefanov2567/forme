@@ -402,6 +402,7 @@
       ],
       "name": "Lookbook bento",
       "settings": {
+        "color_scheme": "",
         "border_radius": 24,
         "gap": 8,
         "overlay_opacity": 30
@@ -461,6 +462,7 @@
         "instagram_post_Fdc3Xj": {
           "type": "instagram_post",
           "settings": {
+            "image": "shopify://shop_images/yoga.png",
             "url": ""
           }
         },
@@ -505,6 +507,7 @@
       ],
       "name": "Instagram feed",
       "settings": {
+        "logo_width": 160,
         "heading": "Последвай ни",
         "description": "<p>Сподели твоят <strong>#stateofmind</strong>. Покажи ни твоя стил!</p>",
         "color_scheme": ""
@@ -516,6 +519,7 @@
         "value_hrGxtk": {
           "type": "value",
           "settings": {
+            "image": "shopify://shop_images/girl-training.png",
             "text": "Strong\nMind\nStrong\nBody"
           }
         },
